@@ -1,0 +1,1 @@
+intro_blurb = "You stand at the gate of Castle Blackhill, the last bastion of mankind. The ancient structure is surrounded by a vast, uncharted wilderness that has been permanently scarred by the aftermath of the Elemental Surge. Food runs low and those capable of venturing outside the walls are few. The burden falls to you, brave hero, to be the champion of those who remain."
