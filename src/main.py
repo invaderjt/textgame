@@ -1,10 +1,11 @@
 from progression import *
-
+from player import *
 
 
 
 def main():
-    introduction()
+    name, method, god, job = introduction()
+    player = Player(name, method, god, job)
 
 
 
