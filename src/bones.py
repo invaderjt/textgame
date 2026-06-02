@@ -42,12 +42,17 @@ def add_to_save_data(data: str) -> str:
     return data + "#&\n"
 
 
-def load_game() -> None:
+def load_game() -> bool:
     name = get_player_input("What was your name?").lower()
+    if not os.path.isfile(f"./saves/{name}.txt"):
+        print("Adventurer not found")
+        return False
     with open(f"./saves/{name}.txt", "r") as file:
         save_data = file.read()
     data = save_data.split("#&\n")
     player_info.player = player_info.Player(data[0], data[1], data[2], data[3])
+    print(f"Welcome back, {player_info.player.name}!")
+    return True
 
 
 def try_again():

@@ -7,7 +7,9 @@ import player_info
 def main():
     choice = intro_block().lower()
     if choice == "load":
-        load_game()
+        loaded = False
+        while not loaded:
+            loaded = load_game()
     else:
         name, method, god, job = introduction()
         player_info.player = player_info.Player(name, method, god, job)
