@@ -1,7 +1,7 @@
 from progression import *
 from bones import *
 import player_info
-
+from locations import *
 
 
 def main():
@@ -13,6 +13,7 @@ def main():
     else:
         name, method, god, job = introduction()
         player_info.player = player_info.Player(name, method, god, job)
+        generate_world()
     while True:
         next()
 

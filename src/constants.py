@@ -3,3 +3,8 @@
 
 
 L_WIDTH = 160
+
+
+
+
+WORLD_SIZE = 3
