@@ -1,17 +1,11 @@
 from formatters import *
 from constants import *
 from dialogue import *
-import random
+from bones import *
 
-def try_again():
-    text = [
-        "What was that?"
-        "I didn't get that."
-        "Try that again."
-        "That's not right..."
-        "That won't work..."
-    ]
-    print(random.choice(text))
+
+# Game Start
+
 
 def intro_block():
     separator("~")
@@ -22,19 +16,7 @@ def intro_block():
     print("\n")
     separator("-")
     separator("~")
-
-def get_player_input(prompt: str, options: list[str] | None = None) -> str:
-    while True:
-        if options is None:
-            return input(prompt + "\n")
-        response = input(prompt + "\n" + " | ".join(options) + "\n")
-        lower_options = []
-        for option in options:
-            lower_options.append(option.lower())
-        if response.lower() not in lower_options:
-            try_again()
-        else:
-            return response
+    return get_player_input("", ["New", "Load", "Exit"])
     
 def assign_job(method: str, god: str) -> str | None:
     if method == "Sword":
@@ -54,9 +36,7 @@ def assign_job(method: str, god: str) -> str | None:
     else:
         raise ValueError("Could not assign job.")
 
-
 def introduction():
-    intro_block()
     dialogue(intro_blurb)
     confirmed = False
     while not confirmed:
@@ -64,7 +44,7 @@ def introduction():
         method = get_player_input("What do you bring to battle?", ["Sword", "Spell"]).title()
         god = get_player_input("Who do you look to?", ["The Life Song", "The Woundkeeper", "The Sagelight"]).title()
         job = assign_job(method, god)
-        confirmation = get_player_input(f"Your are {name}, {job} of {god}.", ["Confirm", "Restart"]).title()
+        confirmation = get_player_input(f"You are {name}, {job} of {god}.", ["Confirm", "Restart"]).title()
         if confirmation == "Confirm":
             confirmed = True
         else:
@@ -73,3 +53,6 @@ def introduction():
 
 def dialogue(text):
     text_box(text)
+
+def next():
+    action = get_player_input("What next?")
