@@ -52,4 +52,3 @@ def generate_world():
     for i in range(WORLD_SIZE):
         for j in range(WORLD_SIZE):
             locations[(i, j)] = Location(i, j)
-    print(locations)
