@@ -66,7 +66,6 @@ def load_game() -> bool:
             locations.locations[int(info[0]),int(info[1])] = locations.Location(int(info[0]),int(info[1]))
             locations.locations[int(info[0]),int(info[1])].discovered = str_to_bool(info[2])
     print(f"Welcome back, {player_info.player.name}!")
-    print(locations.locations)
     return True
 
 def str_to_bool(value: str) -> bool:
