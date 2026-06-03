@@ -3,6 +3,7 @@ import sys
 import os
 from formatters import *
 import player_info
+import locations
 
 
 
@@ -36,6 +37,11 @@ def save_game() -> None:
     save_data += add_to_save_data(plyr.job)
     with open(f"./saves/{plyr.name.lower()}.txt", "w") as file:
         file.write(save_data)
+    location_data = ""
+    for key in locations.locations:
+        location_data += add_to_save_data(str(locations.locations[key]))
+    with open(f"./saves/{plyr.name.lower()}_locs.txt", "w") as file:
+        file.write(location_data)
 
 
 def add_to_save_data(data: str) -> str:
@@ -51,8 +57,20 @@ def load_game() -> bool:
         save_data = file.read()
     data = save_data.split("#&\n")
     player_info.player = player_info.Player(data[0], data[1], data[2], data[3])
+    with open(f"./saves/{name}_locs.txt", "r") as file:
+        location_data = file.read()
+    data = location_data.split("#&\n")
+    for line in data:
+        if line != "":
+            info = line.split("$")
+            locations.locations[int(info[0]),int(info[1])] = locations.Location(int(info[0]),int(info[1]))
+            locations.locations[int(info[0]),int(info[1])].discovered = str_to_bool(info[2])
     print(f"Welcome back, {player_info.player.name}!")
+    print(locations.locations)
     return True
+
+def str_to_bool(value: str) -> bool:
+    return value == "True"
 
 
 def try_again():
