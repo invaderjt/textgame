@@ -10,7 +10,7 @@ class Player():
         self.job = job
         self.quests_completed = set()
         self.bag = []
-        self.gear = {
+        self.gear: dict[str, bag.Item | None] = {
             "Head" : None,
             "Body" : None,
             "Hands" : None,
@@ -96,10 +96,12 @@ class Player():
         if equipping is None:
             print(f"{name} not in bag.")
             return
-        if self.gear[slot] is not None:
-            current = self.find_item(self.gear[slot].name)
+        target_slot = self.gear[slot]
+        if target_slot is not None:
+            current = self.find_item(target_slot.name)
+            assert current is not None
             self.bag[current].equipped = False
-            print(f"{self.gear[slot].name} unequipped.")
+            print(f"{target_slot.name} unequipped.")
         self.gear[slot] = self.bag[equipping]
         self.bag[equipping].equipped = True
         print(f"{name} equipped.")
