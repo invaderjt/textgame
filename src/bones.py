@@ -10,7 +10,8 @@ import locations
 universal_commands = [
     "exit",
     "save",
-    "whoami"
+    "whoami",
+    "bag",
 ]
 
 def universal_input(command: str) -> None:
@@ -25,7 +26,8 @@ def universal_input(command: str) -> None:
         case "whoami":
             plyr = player_info.player
             print(f"You are {plyr.name}, {plyr.job} of {plyr.god}")
-
+        case "bag":
+            player_info.player.show_bag()
 
 
 def save_game() -> None:
@@ -35,12 +37,16 @@ def save_game() -> None:
     save_data += add_to_save_data(plyr.method)
     save_data += add_to_save_data(plyr.god)
     save_data += add_to_save_data(plyr.job)
-    with open(f"./saves/{plyr.name.lower()}.txt", "w") as file:
+    if not os.path.isdir("./saves"):
+        os.mkdir("./saves")
+    if not os.path.isdir(f"./saves/{plyr.name.lower()}"):
+        os.mkdir(f"./saves/{plyr.name.lower()}")
+    with open(f"./saves/{plyr.name.lower()}/save.txt", "w") as file:
         file.write(save_data)
     location_data = ""
     for key in locations.locations:
         location_data += add_to_save_data(str(locations.locations[key]))
-    with open(f"./saves/{plyr.name.lower()}_locs.txt", "w") as file:
+    with open(f"./saves/{plyr.name.lower()}/locations.txt", "w") as file:
         file.write(location_data)
 
 
@@ -50,14 +56,14 @@ def add_to_save_data(data: str) -> str:
 
 def load_game() -> bool:
     name = get_player_input("What was your name?").lower()
-    if not os.path.isfile(f"./saves/{name}.txt"):
+    if not os.path.isfile(f"./saves/{name}/save.txt"):
         print("Adventurer not found")
         return False
-    with open(f"./saves/{name}.txt", "r") as file:
+    with open(f"./saves/{name}/save.txt", "r") as file:
         save_data = file.read()
     data = save_data.split("#&\n")
     player_info.player = player_info.Player(data[0], data[1], data[2], data[3])
-    with open(f"./saves/{name}_locs.txt", "r") as file:
+    with open(f"./saves/{name}/locations.txt", "r") as file:
         location_data = file.read()
     data = location_data.split("#&\n")
     for line in data:
@@ -89,6 +95,9 @@ def get_player_input(prompt: str, options: list[str] | None = None) -> str:
         if options is None:
             response = input(prompt + "\n")
             if response.lower() not in universal_commands:
+                if not response.isalnum():
+                    try_again()
+                    continue
                 return response
             universal_input(response.lower())
             continue

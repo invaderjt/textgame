@@ -1,4 +1,5 @@
 import bag
+from formatters import separator
 
 
 
@@ -105,6 +106,21 @@ class Player():
         self.gear[slot] = self.bag[equipping]
         self.bag[equipping].equipped = True
         print(f"{name} equipped.")
+
+    def show_bag(self):
+        separator("-")
+        print ("Your bag contains:")
+        if len(self.bag) == 0:
+            print("Nothing")
+            return
+        for item in self.bag:
+            if item.equipped:
+                print(f"{item.name} (equipped)")
+            elif item.quantity > 1:
+                print(f"{item.name} x{item.quantity}")
+            else:
+                print(item.name)
+        separator("-")
 
 
 player = Player("not set", "not set", "not set", "not set")
