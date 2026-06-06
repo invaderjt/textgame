@@ -13,6 +13,7 @@ def main():
     else:
         name, method, god, job = introduction()
         player_info.player = player_info.Player(name, method, god, job)
+        player_info.player.get_starting_gear(player_info.player.job)
         generate_world()
     while True:
         next()

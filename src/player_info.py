@@ -1,4 +1,4 @@
-import bag
+import items
 from formatters import separator
 
 
@@ -11,7 +11,7 @@ class Player():
         self.job = job
         self.quests_completed = set()
         self.bag = []
-        self.gear: dict[str, bag.Item | None] = {
+        self.gear: dict[str, items.Item | None] = {
             "Head" : None,
             "Body" : None,
             "Hands" : None,
@@ -29,23 +29,12 @@ class Player():
         self.atk_bonus = 0
         self.spl_bonus = 0
         self.speed = 5
+        self.in_combat = False
         armor = 0
         match self.job:
             case "Knight":
                 self.max_hp += 5
                 self.heal_to_full()
-                self.add_to_bag("Father's Helm")
-                self.add_to_bag("Father's Armor")
-                self.add_to_bag("Father's Gloves")
-                self.add_to_bag("Father's Boots")
-                self.add_to_bag("Sword")
-                self.add_to_bag("Shield")
-                self.equip_item("Father's Helm", "Head")
-                self.equip_item("Father's Armor", "Body")
-                self.equip_item("Father's Gloves", "Hands")
-                self.equip_item("Father's Boots", "Feet")
-                self.equip_item("Sword", "Main_Hand")
-                self.equip_item("Shield", "Off_Hand")
             case "Warrior":
                 self.atk_bonus += 2
             case "Monk":
@@ -70,19 +59,46 @@ class Player():
         self.mp_to_full()
 
     def add_to_bag(self, item: str, quantity: int = 1):
-        thing = bag.item_glossary[item]
-        match thing["type"]:
+        new_item = items.item_glossary[item]
+        match new_item["type"]:
             case "weapon":
-                acquired = bag.Weapon(quantity, thing["name"], thing["weight"], thing["slot"], thing["damage"], thing["dmg_type"])
+                acquired = items.Weapon(quantity, new_item["name"], new_item["weight"], new_item["slot"], new_item["damage"], new_item["dmg_type"])
             case "armor":
-                acquired = bag.Armor(quantity, thing["name"], thing["weight"], thing["slot"], thing["armor"], thing["effect"])
+                acquired = items.Armor(quantity, new_item["name"], new_item["weight"], new_item["slot"], new_item["armor"], new_item["effect"])
             case _:
-                acquired = bag.Item(quantity, thing["name"], thing["weight"])
+                acquired = items.Item(quantity, new_item["name"], new_item["weight"])
         for object in self.bag:
             if object == acquired:
                 object.quantity += quantity
                 return
         self.bag.append(acquired)
+
+    def get_starting_gear(self, job: str):
+        match job:
+            case "Knight":
+                self.add_to_bag("Father's Helm")
+                self.add_to_bag("Father's Armor")
+                self.add_to_bag("Father's Gloves")
+                self.add_to_bag("Father's Boots")
+                self.add_to_bag("Sword")
+                self.add_to_bag("Shield")
+                self.equip_item("Father's Helm", "Head")
+                self.equip_item("Father's Armor", "Body")
+                self.equip_item("Father's Gloves", "Hands")
+                self.equip_item("Father's Boots", "Feet")
+                self.equip_item("Sword", "Main_Hand")
+                self.equip_item("Shield", "Off_Hand")
+            case "Warrior":
+                pass
+            case "Monk":
+                pass
+            case "Priest":
+                pass
+            case "Acolyte":
+                pass
+            case "Mystic":
+                pass
+
 
     def find_item(self, name: str) -> int | None:
         index = None

@@ -4,6 +4,7 @@ import os
 from formatters import *
 import player_info
 import locations
+import items
 
 
 
@@ -48,6 +49,16 @@ def save_game() -> None:
         location_data += add_to_save_data(str(locations.locations[key]))
     with open(f"./saves/{plyr.name.lower()}/locations.txt", "w") as file:
         file.write(location_data)
+    item_data = ""
+    for item in plyr.bag:
+        if isinstance(item, items.Weapon):
+            item_data += add_to_save_data(f"Weapon${item.name}${item.quantity}${item.equipped}")
+        elif isinstance(item, items.Armor):
+            item_data += add_to_save_data(f"Armor${item.name}${item.quantity}${item.equipped}")
+        else:
+            item_data += add_to_save_data(f"Item${item.name}${item.quantity}")
+    with open(f"./saves/{plyr.name.lower()}/items.txt", "w") as file:
+        file.write(item_data)
 
 
 def add_to_save_data(data: str) -> str:
@@ -71,6 +82,23 @@ def load_game() -> bool:
             info = line.split("$")
             locations.locations[int(info[0]),int(info[1])] = locations.Location(int(info[0]),int(info[1]))
             locations.locations[int(info[0]),int(info[1])].discovered = str_to_bool(info[2])
+    with open(f"./saves/{name}/items.txt", "r") as file:
+        item_data = file.read()
+    data = item_data.split("#&\n")
+    for line in data:
+        if line != "":
+            info = line.split("$")
+            match info[0]:
+                case "Weapon":
+                    player_info.player.add_to_bag(info[1], int(info[2]))
+                    if str_to_bool(info[3]):
+                        player_info.player.equip_item(info[1], items.item_glossary[info[1]]["slot"])
+                case "Armor":
+                    player_info.player.add_to_bag(info[1], int(info[2]))
+                    if str_to_bool(info[3]):
+                        player_info.player.equip_item(info[1], items.item_glossary[info[1]]["slot"])
+                case "Item":
+                    player_info.player.add_to_bag(info[1], int(info[2]))
     print(f"Welcome back, {player_info.player.name}!")
     return True
 
