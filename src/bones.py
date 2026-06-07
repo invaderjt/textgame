@@ -1,10 +1,10 @@
-import sys
 import os
 import locations
 import items
 from formatters import *
 import player_info
 from utils import get_player_input
+from dialogue import *
 
 
 def what_next() -> None:
@@ -13,9 +13,21 @@ def what_next() -> None:
         case "travel":
             travel()
         case "search":
-            pass
+            search()
         case "camp":
             camp()
+
+def search():
+    location = locations.locations[player_info.player.position]
+    if location.search is None:
+        print("There's nothing interesting here...")
+        return
+    print(location.search[0])
+    if location.environment == "Settlement":
+        choice = get_player_input("Who do you want to talk to?", location.search[1])
+        player_info.player.state = "talking"
+        while player_info.player.state == "talking":
+            talk_to_npc(choice)
 
 def camp():
     player_info.player.full_restore()

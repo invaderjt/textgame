@@ -9,14 +9,19 @@ location_glossary = {
         "climate" : "Temperate",
         "environment" : "Settlement",
         "encounter" : None,
-        "arrival" : "The walls of Castle Blackhill are as imposing as they are comforting."
+        "arrival" : "The walls of Castle Blackhill are as imposing as they are comforting.",
+        "search" : [
+            "There are several people to talk to and businesses to visit.",
+            ["Blacksmith", "Merchant", "Priest"],
+            ]
         },
     (0,1) : {
         "feature" : "Road",
         "climate" : "Temperate",
         "environment" : "Forest",
         "encounter" : ["Goblin", "Goblin"],
-        "arrival" : "The road North of the castle is falling apart. The bricks are cracked and displaced, scarred from conflict."
+        "arrival" : "The road North of the castle is falling apart. The bricks are cracked and displaced, scarred from conflict.",
+        "search" : None
     }
     
     
@@ -26,12 +31,11 @@ location_glossary = {
 settlements_glossary = {
     
     "Castle Blackhill" : {
-        "NPCs" : {
-            None
-        },
-        "Places" : {
-            "Hogwarts" : None
-        },
+        "NPCs" : [
+            "Blacksmith",
+            "Merchant",
+            "Priest",
+        ],
     }
 }
 
@@ -50,6 +54,7 @@ class Location():
             self.climate = data["climate"]
             self.environment = data["environment"]
             self.encounter = data["encounter"]
+            self.search = data["search"]
 
     def __repr__(self):
         return f"{str(self.x)}${str(self.y)}${str(self.discovered)}"

@@ -30,6 +30,7 @@ class Player():
         self.atk_bonus = 0
         self.spl_bonus = 0
         self.speed = 3
+        self.state = "exploring"
         self.in_combat = False
         self.position = (0,0)
         self.prev_position = (0,0)
