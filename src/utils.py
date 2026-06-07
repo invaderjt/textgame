@@ -44,9 +44,9 @@ def universal_input(command: str) -> None:
 def try_again():
     global input_queue
     text = [
-        "What was that?",
-        "I didn't get that.",
-        "Try that again.",
+        "What was that..?",
+        "I didn't get that...",
+        "Try that again...",
         "That's not right...",
         "That won't work..."
     ]
@@ -63,7 +63,10 @@ def get_player_input(prompt: str, options: list[str] = [""]) -> str:
             response = input_queue
             input_queue = ""
         else:
-            response = input(prompt + "\n" + " | ".join(options) + "\n")
+            if prompt != "":
+                response = input(prompt + "\n" + " | ".join(options) + "\n")
+            else:
+                response = input(" | ".join(options) + "\n")
             if response.lower() != "r":
                 last_input = response.lower()
         if "," in response:

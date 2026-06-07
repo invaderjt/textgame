@@ -19,7 +19,7 @@ location_glossary = {
         "feature" : "Road",
         "climate" : "Temperate",
         "environment" : "Forest",
-        "encounter" : ["Goblin", "Goblin"],
+        "encounter" : ["Bugbear", "Goblin"],
         "arrival" : "The road North of the castle is falling apart. The bricks are cracked and displaced, scarred from conflict.",
         "search" : None
     }
@@ -38,6 +38,9 @@ settlements_glossary = {
         ],
     }
 }
+
+def encounter_difficulty():
+    pass
 
 
 
@@ -64,6 +67,10 @@ class Location():
         if not self.discovered:
             self.discovered = True
             if self.encounter is not None:run_encounter(self.encounter)
+
+    def distance_from_blackhill(self) -> int:
+        hyp = abs(self.x) ** 2 + abs(self.y) ** 2
+        return int(hyp ** 0.5)
 
 locations = {}
 

@@ -4,14 +4,13 @@ from utils import get_player_input
 from formatters import *
 
 class Enemy():
-    def __init__(self, name: str, hp: int, mp: int, attack: int, armor: int, speed: int, loot: list):
+    def __init__(self, name: str, hp: int, mp: int, attack: int, armor: int, speed: int):
         self.name = name
         self.hp = hp
         self.mp = mp
         self.attack = attack
         self.armor = armor
         self.speed = speed
-        self.loot = loot
 
     def attack_player(self):
         if check_if_hit(self.speed, player_info.player.speed):
@@ -26,7 +25,7 @@ def run_encounter(enemies: list[str]):
     active_enemies = []
     for enemy in enemies:
         enemy_info = enemy_glossary[enemy]
-        active_enemies.append(Enemy(enemy_info["name"], enemy_info["hp"], enemy_info["mp"], enemy_info["attack"], enemy_info["armor"], enemy_info["speed"], enemy_info["loot"]))
+        active_enemies.append(Enemy(enemy_info["name"], enemy_info["hp"], enemy_info["mp"], enemy_info["attack"], enemy_info["armor"], enemy_info["speed"]))
     player_info.player.in_combat = True
     intro_string = "You are confronted by a "
     if len(active_enemies) == 1:
@@ -71,26 +70,67 @@ def run_encounter(enemies: list[str]):
                     print("You have been slain...")
                     exit()
 
-
+basic = {
+    "hp" : 5,
+    "mp" : 0,
+    "attack" : 2,
+    "armor" : 0,
+    "speed" : 2,
+}
+quick = {
+    "hp" : 3,
+    "mp" : 0,
+    "attack" : 1,
+    "armor" : 0,
+    "speed" : 5,
+}
+bruiser = {
+    "hp" : 8,
+    "mp" : 0,
+    "attack" : 4,
+    "armor" : 1,
+    "speed" : 1,
+}
+tank = {
+    "hp" : 12,
+    "mp" : 0,
+    "attack" : 2,
+    "armor" : 5,
+    "speed" : 1,
+}
 
 
 enemy_glossary = {
     "Goblin" : {
         "name" : "Goblin",
-        "hp" : 5,
-        "mp" : 0,
-        "attack" : 2,
-        "armor" : 1,
-        "speed" : 4,
-        "loot" : []
+        "hp" : quick["hp"],
+        "mp" : quick["mp"],
+        "attack" : quick["attack"],
+        "armor" : quick["armor"],
+        "speed" : quick["speed"],
+    },
+    "Hobgoblin" : {
+        "name" : "Hobgoblin",
+        "hp" : basic["hp"],
+        "mp" : basic["mp"],
+        "attack" : basic["attack"],
+        "armor" : basic["armor"],
+        "speed" : basic["speed"],
+    },
+    "Bugbear" : {
+        "name" : "Bugbear",
+        "hp" : bruiser["hp"],
+        "mp" : bruiser["mp"],
+        "attack" : bruiser["attack"],
+        "armor" : bruiser["armor"],
+        "speed" : bruiser["speed"]
     },
     "Ogre" : {
         "name" : "Ogre",
-        "hp" : 10,
-        "mp" : 0,
-        "attack" : 3,
-        "armor" : 2,
-        "speed" : 2,
-        "loot" : []
+        "hp" : tank["hp"],
+        "mp" : tank["mp"],
+        "attack" : tank["attack"],
+        "armor" : tank["armor"],
+        "speed" : tank["speed"],
     }
 }
