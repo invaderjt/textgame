@@ -1,5 +1,6 @@
 import items
 from formatters import separator
+from combat import calculate_damage, check_if_hit
 
 
 
@@ -28,9 +29,11 @@ class Player():
         self.current_mp = self.max_mp
         self.atk_bonus = 0
         self.spl_bonus = 0
-        self.speed = 5
+        self.speed = 3
         self.in_combat = False
-        armor = 0
+        self.position = (0,0)
+        self.prev_position = (0,0)
+        self.armor = 0
         match self.job:
             case "Knight":
                 self.max_hp += 5
@@ -118,10 +121,24 @@ class Player():
             current = self.find_item(target_slot.name)
             assert current is not None
             self.bag[current].equipped = False
+            self.armor -= target_slot.armor if isinstance(target_slot, items.Armor) else 0
             print(f"{target_slot.name} unequipped.")
         self.gear[slot] = self.bag[equipping]
         self.bag[equipping].equipped = True
+        self.armor += self.bag[equipping].armor if isinstance(self.bag[equipping], items.Armor) else 0
         print(f"{name} equipped.")
+
+    def unequip_item(self, slot: str):
+        target_slot = self.gear[slot]
+        if target_slot is None:
+            print(f"No item equipped in {slot}.")
+            return
+        current = self.find_item(target_slot.name)
+        assert current is not None
+        self.bag[current].equipped = False
+        self.armor -= target_slot.armor if isinstance(target_slot, items.Armor) else 0
+        print(f"{target_slot.name} unequipped.")
+        self.gear[slot] = None
 
     def show_bag(self):
         separator("-")
@@ -137,6 +154,31 @@ class Player():
             else:
                 print(item.name)
         separator("-")
+
+    def show_status(self):
+        separator("-")
+        print(f"{self.name} the {self.job}")
+        print(f"Level: {self.level}")
+        print(f"HP: {self.current_hp}/{self.max_hp}")
+        print(f"MP: {self.current_mp}/{self.max_mp}")
+        print(f"XP: {self.xp}")
+        print(f"Attack Bonus: {self.atk_bonus}")
+        print(f"Spell Bonus: {self.spl_bonus}")
+        print(f"Speed: {self.speed}")
+        print(f"Armor: {self.armor}")
+        separator("-")
+
+
+    def attack_enemy(self, enemy):
+        damage = self.atk_bonus
+        if self.gear["Main_Hand"] is not None and isinstance(self.gear["Main_Hand"], items.Weapon):
+            damage += self.gear["Main_Hand"].damage
+        if check_if_hit(self.speed, enemy.speed):
+            actual_damage = calculate_damage(damage, enemy.armor)
+            enemy.hp -= actual_damage
+            print(f"You hit the {enemy.name} for {actual_damage} damage.")
+        else:
+            print("You missed!")
 
 
 player = Player("not set", "not set", "not set", "not set")

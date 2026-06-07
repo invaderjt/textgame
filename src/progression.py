@@ -54,5 +54,3 @@ def introduction():
 def dialogue(text):
     text_box(text)
 
-def next():
-    action = get_player_input("What next?")

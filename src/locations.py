@@ -1,5 +1,5 @@
 from constants import *
-
+from enemies import *
 
 
 location_glossary = {
@@ -8,8 +8,16 @@ location_glossary = {
         "feature" : "Castle Blackhill",
         "climate" : "Temperate",
         "environment" : "Settlement",
-        "encounter" : None
-        }
+        "encounter" : None,
+        "arrival" : "The walls of Castle Blackhill are as imposing as they are comforting."
+        },
+    (0,1) : {
+        "feature" : "Road",
+        "climate" : "Temperate",
+        "environment" : "Forest",
+        "encounter" : ["Goblin", "Goblin"],
+        "arrival" : "The road North of the castle is falling apart. The bricks are cracked and displaced, scarred from conflict."
+    }
     
     
 }
@@ -45,10 +53,16 @@ class Location():
 
     def __repr__(self):
         return f"{str(self.x)}${str(self.y)}${str(self.discovered)}"
+    
+    def arrive(self):
+        print(location_glossary[self.key]["arrival"])
+        if not self.discovered:
+            self.discovered = True
+            if self.encounter is not None:run_encounter(self.encounter)
 
 locations = {}
 
 def generate_world():
-    for i in range(WORLD_SIZE):
-        for j in range(WORLD_SIZE):
+    for i in range(-WORLD_SIZE, WORLD_SIZE + 1):
+        for j in range(-WORLD_SIZE, WORLD_SIZE + 1):
             locations[(i, j)] = Location(i, j)

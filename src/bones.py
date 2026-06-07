@@ -3,7 +3,6 @@ import sys
 import os
 from formatters import *
 import player_info
-import locations
 import items
 
 
@@ -13,6 +12,7 @@ universal_commands = [
     "save",
     "whoami",
     "bag",
+    "status",
 ]
 
 def universal_input(command: str) -> None:
@@ -29,15 +29,54 @@ def universal_input(command: str) -> None:
             print(f"You are {plyr.name}, {plyr.job} of {plyr.god}")
         case "bag":
             player_info.player.show_bag()
+        case "status":
+            player_info.player.show_status()
 
+
+def what_next() -> None:
+    choice = get_player_input("What will you do?", ["Travel","Search","Camp"])
+    match choice.lower():
+        case "travel":
+            travel()
+        case "search":
+            pass
+        case "camp":
+            camp()
+
+def camp():
+    player_info.player.full_restore()
+    print("You set up camp and rest for the night. Hopefully you go unnoticed...")
+
+def travel():
+    import locations
+    direction = get_player_input("Which way?", ["North", "East", "South", "West"])
+    x, y = player_info.player.position
+    match direction.lower():
+        case "north":
+            new_position = (x, y + 1)
+        case "east":
+            new_position = (x + 1, y)
+        case "south":
+            new_position = (x, y - 1)
+        case "west":
+            new_position = (x - 1, y)
+    if new_position[0] > WORLD_SIZE or new_position[0] < -WORLD_SIZE or new_position[1] > WORLD_SIZE or new_position[1] < -WORLD_SIZE:
+        print("You reach an impassable barrier. You cannot go that way.")
+        return
+    player_info.player.prev_position = player_info.player.position
+    player_info.player.position = new_position
+    locations.locations[new_position].arrive()
+    
 
 def save_game() -> None:
+    import locations
     plyr = player_info.player
     save_data = ""
     save_data += add_to_save_data(plyr.name)
     save_data += add_to_save_data(plyr.method)
     save_data += add_to_save_data(plyr.god)
     save_data += add_to_save_data(plyr.job)
+    save_data += add_to_save_data(str(plyr.position[0]) + "$" + str(plyr.position[1]))
     if not os.path.isdir("./saves"):
         os.mkdir("./saves")
     if not os.path.isdir(f"./saves/{plyr.name.lower()}"):
@@ -66,6 +105,7 @@ def add_to_save_data(data: str) -> str:
 
 
 def load_game() -> bool:
+    import locations
     name = get_player_input("What was your name?").lower()
     if not os.path.isfile(f"./saves/{name}/save.txt"):
         print("Adventurer not found")
@@ -74,6 +114,8 @@ def load_game() -> bool:
         save_data = file.read()
     data = save_data.split("#&\n")
     player_info.player = player_info.Player(data[0], data[1], data[2], data[3])
+    pos = data[4].split("$")
+    player_info.player.position = (int(pos[0]), int(pos[1]))
     with open(f"./saves/{name}/locations.txt", "r") as file:
         location_data = file.read()
     data = location_data.split("#&\n")
@@ -141,4 +183,5 @@ def get_player_input(prompt: str, options: list[str] | None = None) -> str:
             else:
                 return response
         
+
 

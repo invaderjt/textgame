@@ -48,7 +48,7 @@ item_glossary = {
         "type" : "weapon",
         "weight" : 2.0,
         "slot" : "Main_Hand",
-        "damage" : 1,
+        "damage" : 5,
         "dmg_type" : "physical"
     },
     "Shield" : {

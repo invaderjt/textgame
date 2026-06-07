@@ -16,7 +16,7 @@ def main():
         player_info.player.get_starting_gear(player_info.player.job)
         generate_world()
     while True:
-        next()
+        what_next()
 
 
 
