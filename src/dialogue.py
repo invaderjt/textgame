@@ -1,5 +1,6 @@
 from utils import get_player_input
 import player_info
+from formatters import *
 
 
 def talk_to_npc(npc: str):
@@ -8,16 +9,19 @@ def talk_to_npc(npc: str):
     if next_line == speaker["quest"]:
         quest_prompt(speaker["dialogue"][next_line])
         speaker["last_said"] += 1
+        return
     elif next_line >= len(speaker["dialogue"]):
-        print(speaker["exhausted"])
+        text_box(speaker["exhausted"])
     else:
-        print(speaker["dialogue"][next_line])
+        text_box(speaker["dialogue"][next_line])
+        speaker["last_said"] += 1
     choice = get_player_input("", ["Continue", "Goodbye"])
     if choice.lower() == "goodbye":
         player_info.player.state = "exploring"
 
 def quest_prompt(prompt: str) -> str:
-    return get_player_input(prompt, ["Accept", "Decline"]).lower()
+    text_box(prompt)
+    return get_player_input("", ["Accept", "Decline"]).lower()
 
 
 intro_blurb = "You stand at the gate of Castle Blackhill, the last bastion of mankind. The ancient structure is surrounded by a vast, uncharted wilderness that has been permanently scarred by the aftermath of the Elemental Surge. Food runs low and those capable of venturing outside the walls are few. The burden falls to you, brave hero, to be the champion of those who remain."
@@ -49,7 +53,7 @@ npc_dialogue = {
         ],
         "quest" : None,
         "last_said" : -1,
-        "exhausted" : "May you find what you're looking for."
+        "exhausted" : "Come again soon!"
     }
 }
 
