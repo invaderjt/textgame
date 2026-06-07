@@ -1,6 +1,6 @@
 from combat import calculate_damage, check_if_hit
 import player_info
-from bones import *
+from utils import get_player_input
 from formatters import *
 
 class Enemy():

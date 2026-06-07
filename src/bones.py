@@ -1,36 +1,10 @@
-import random
 import sys
 import os
+import locations
+import items
 from formatters import *
 import player_info
-import items
-
-
-
-universal_commands = [
-    "exit",
-    "save",
-    "whoami",
-    "bag",
-    "status",
-]
-
-def universal_input(command: str) -> None:
-    match command:
-        case "exit":
-            save_prompt = get_player_input("Save first?", ["Y", "N"]).lower()
-            if save_prompt == "y":
-                save_game()
-            sys.exit()
-        case "save":
-            save_game()
-        case "whoami":
-            plyr = player_info.player
-            print(f"You are {plyr.name}, {plyr.job} of {plyr.god}")
-        case "bag":
-            player_info.player.show_bag()
-        case "status":
-            player_info.player.show_status()
+from utils import get_player_input
 
 
 def what_next() -> None:
@@ -48,7 +22,6 @@ def camp():
     print("You set up camp and rest for the night. Hopefully you go unnoticed...")
 
 def travel():
-    import locations
     direction = get_player_input("Which way?", ["North", "East", "South", "West"])
     x, y = player_info.player.position
     match direction.lower():
@@ -69,7 +42,6 @@ def travel():
     
 
 def save_game() -> None:
-    import locations
     plyr = player_info.player
     save_data = ""
     save_data += add_to_save_data(plyr.name)
@@ -105,7 +77,6 @@ def add_to_save_data(data: str) -> str:
 
 
 def load_game() -> bool:
-    import locations
     name = get_player_input("What was your name?").lower()
     if not os.path.isfile(f"./saves/{name}/save.txt"):
         print("Adventurer not found")
@@ -147,41 +118,5 @@ def load_game() -> bool:
 def str_to_bool(value: str) -> bool:
     return value == "True"
 
-
-def try_again():
-    text = [
-        "What was that?",
-        "I didn't get that.",
-        "Try that again.",
-        "That's not right...",
-        "That won't work..."
-    ]
-    print(random.choice(text))
-
-
-def get_player_input(prompt: str, options: list[str] | None = None) -> str:
-    separator("-")
-    while True:
-        if options is None:
-            response = input(prompt + "\n")
-            if response.lower() not in universal_commands:
-                if not response.isalnum():
-                    try_again()
-                    continue
-                return response
-            universal_input(response.lower())
-            continue
-        response = input(prompt + "\n" + " | ".join(options) + "\n")
-        lower_options = []
-        for option in options:
-            lower_options.append(option.lower())
-        if response.lower() not in lower_options and response.lower() not in universal_commands:
-            try_again()
-        else:
-            if response.lower() in universal_commands:
-                universal_input(response.lower())
-            else:
-                return response
-        
 
 
