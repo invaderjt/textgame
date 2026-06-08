@@ -7,9 +7,12 @@ def talk_to_npc(npc: str):
     speaker = npc_dialogue[npc.lower()]
     next_line = speaker["last_said"] + 1
     if next_line == speaker["quest"]:
-        quest_prompt(speaker["dialogue"][next_line])
+        acceptance = quest_prompt(speaker["dialogue"][next_line])
+        if acceptance == "accept":
+            text_box(speaker["quest_accept"])
+        else:
+            text_box(speaker["quest_decline"])
         speaker["last_said"] += 1
-        return
     elif next_line >= len(speaker["dialogue"]):
         text_box(speaker["exhausted"])
     else:
@@ -31,9 +34,10 @@ npc_dialogue = {
     "blacksmith" : {
         "dialogue": [
             "Well, if it isn't the new guy. I'd love to help you out, but I've got a bit of a problem. My son went to fetch me some wood from the forest North of here yesterday morning, and he hasn't found his way back yet. He's a good kid, but I'm worried something out there might have got to him. If you can find him and bring him home, I'll give you any weapon you like from my shop.",
-            "Thanks a lot. Take this to help. And be careful; it's dangerous out there."
         ],
         "quest" : 0,
+        "quest_accept" : "Thanks a lot. Take this to help. And be careful; it's dangerous out there.",
+        "quest_decline" : "Bah, typical. You adventurers always think you're too busy to help the common folk.",
         "last_said" : -1,
         "exhausted" : "Best of luck out there."
     },
