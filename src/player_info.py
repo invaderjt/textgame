@@ -22,7 +22,7 @@ class Player():
             "Extra" : None
         }
         self.level = 1
-        self.max_hp = 10
+        self.max_hp = 100
         self.current_hp = self.max_hp
         self.xp = 0
         self.max_mp = 0
@@ -35,6 +35,8 @@ class Player():
         self.position = (0,0)
         self.prev_position = (0,0)
         self.armor = 0
+        self.current_quests = set()
+        self.completed_quests = set()
         match self.job:
             case "Knight":
                 self.max_hp += 5

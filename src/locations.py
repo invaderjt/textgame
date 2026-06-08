@@ -26,9 +26,9 @@ location_glossary = {
         "feature" : "Old Mines",
         "environment" : "Forest",
         "encounter" : ["Ogre", "Bugbear", "Hobgoblin", "Goblin", "Goblin"],
-        "arrival" : "The old mines are overrun with goblins. They're trying to get into the entrace. You hear someone calling for help from within!",
+        "arrival" : "The old mines are overrun with goblins. They're trying to get into the entrance. You hear someone calling for help from within!",
         "search" : [
-            "A dwarf crawl out of the mine entrance. He's bruised and covered in filth. Could this be the blacksmith's son?",
+            "A dwarf is trying to crawl out of the collapsed mine entrance. He's bruised and covered in filth. Could this be the blacksmith's son?",
             ["Survivor"],
         ]
     }

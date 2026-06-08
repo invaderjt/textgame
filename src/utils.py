@@ -11,6 +11,7 @@ universal_commands = [
     "bag",
     "status",
     "re",
+    "quests",
 ]
 
 input_queue = ""
@@ -21,9 +22,8 @@ def universal_input(command: str) -> None:
         case "exit":
             if player_info.player.name != "not set":
                 save_prompt = get_player_input("Save first?", ["Yes", "No"]).lower()
-                if save_prompt == "y":
-                    import bones
-                    bones.save_game()
+                if save_prompt == "yes":
+                    universal_input("save")
             sys.exit()
         case "save":
             import bones
@@ -39,6 +39,9 @@ def universal_input(command: str) -> None:
             global input_queue
             global last_input
             input_queue = last_input
+        case "quests":
+            print(f"Current Quests: {player_info.player.current_quests}")
+            print(f"Completed Quests: {player_info.player.completed_quests}")
 
 
 def try_again():
