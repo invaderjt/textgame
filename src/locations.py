@@ -1,12 +1,12 @@
 from constants import *
 from enemies import *
+import random
 
 
 location_glossary = {
  
     (0,0) : {
         "feature" : "Castle Blackhill",
-        "climate" : "Temperate",
         "environment" : "Settlement",
         "encounter" : None,
         "arrival" : "The walls of Castle Blackhill are as imposing as they are comforting.",
@@ -17,7 +17,6 @@ location_glossary = {
         },
     (0,1) : {
         "feature" : "Road",
-        "climate" : "Temperate",
         "environment" : "Forest",
         "encounter" : ["Bugbear", "Goblin"],
         "arrival" : "The road North of the castle is falling apart. The bricks are cracked and displaced, scarred from conflict.",
@@ -54,16 +53,26 @@ class Location():
         if self.key in location_glossary:
             data = location_glossary[self.key]
             self.feature = data["feature"]
-            self.climate = data["climate"]
             self.environment = data["environment"]
             self.encounter = data["encounter"]
             self.search = data["search"]
+            self.arrival = data["arrival"]
+        else:
+            self.feature = random.choice(features)
+            self.environment = random.choice(environments)
+            self.encounter = []
+            for _ in range(random.choice(range(1,4))):
+                self.encounter.append(random.choice(encounters))
+            self.search = None
+            self.arrival = f"You reach a {self.environment}. There is a {self.feature} nearby."
+
+
 
     def __repr__(self):
         return f"{str(self.x)}${str(self.y)}${str(self.discovered)}"
     
     def arrive(self):
-        print(location_glossary[self.key]["arrival"])
+        print(self.arrival)
         if not self.discovered:
             self.discovered = True
             if self.encounter is not None:run_encounter(self.encounter)
@@ -78,3 +87,22 @@ def generate_world():
     for i in range(-WORLD_SIZE, WORLD_SIZE + 1):
         for j in range(-WORLD_SIZE, WORLD_SIZE + 1):
             locations[(i, j)] = Location(i, j)
+
+features = [
+    "Ruined Structure",
+    "Cabin",
+    "Camp",
+    "Giant Tree",
+]
+environments = [
+    "Road",
+    "Forest",
+    "River",
+    "Field",
+]
+encounters = [
+    "Goblin",
+    "Hobgoblin",
+    "Bugbear",
+    "Ogre",
+]
