@@ -19,7 +19,7 @@ def intro_block():
     return get_player_input("", ["New", "Load", "Exit"])
     
 def assign_job(method: str, god: str) -> str | None:
-    if method == "Sword":
+    if method == "Blade":
         if god == "The Life Song":
             return "Knight"
         elif god == "The Woundkeeper":
@@ -41,7 +41,7 @@ def introduction():
     confirmed = False
     while not confirmed:
         name = get_player_input("What is your name?")
-        method = get_player_input("What do you bring to battle?", ["Sword", "Spell"]).title()
+        method = get_player_input("What do you bring to battle?", ["Blade", "Spell"]).title()
         god = get_player_input("Who do you look to?", ["The Life Song", "The Woundkeeper", "The Sagelight"]).title()
         job = assign_job(method, god)
         confirmation = get_player_input(f"You are {name}, {job} of {god}.", ["Confirm", "Restart"]).title()
