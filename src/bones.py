@@ -22,12 +22,13 @@ def search():
     if location.search is None:
         print("There's nothing interesting here...")
         return
-    print(location.search[0])
-    if location.environment == "Settlement":
+    if isinstance(location.search, list):
         choice = get_player_input("Who do you want to talk to?", location.search[1])
         player_info.player.state = "talking"
         while player_info.player.state == "talking":
             talk_to_npc(choice)
+    else:
+        print(location.search)
 
 def camp():
     player_info.player.full_restore()

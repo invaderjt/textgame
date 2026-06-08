@@ -41,17 +41,16 @@ def run_encounter(enemies: list[str]):
                 match action:
                     case "Attack":
                         if len(active_enemies) > 1:
-                            target = get_player_input("Which one?", [enemy.name for enemy in active_enemies])
+                            enemies_list = []
+                            for i in range(len(active_enemies)):
+                                enemies_list.append(f"{i + 1}. {active_enemies[i].name}")
+                            target_index = int(get_player_input("Which one?", enemies_list)[0]) - 1
                         else:
-                            target = active_enemies[0].name
-                        for i in range(len(active_enemies)):
-                            if active_enemies[i].name == target.title():
-                                target_enemy = active_enemies[i]
-                                target_index = i
-                                break
-                        player_info.player.attack_enemy(target_enemy)
-                        if target_enemy.hp <= 0:
-                            print(f"You defeated the {target_enemy.name}!")
+                            target_index = 0
+                        target = active_enemies[target_index]
+                        player_info.player.attack_enemy(target)
+                        if target.hp <= 0:
+                            print(f"You defeated the {target.name}!")
                             active_enemies.pop(target_index)
                         if len(active_enemies) == 0:
                             print("All enemies slain!")
@@ -65,7 +64,8 @@ def run_encounter(enemies: list[str]):
                         player_info.player.position = player_info.player.prev_position
                         break
             else:
-                entity.attack_player()
+                if entity.hp > 0:
+                    entity.attack_player()
                 if player_info.player.current_hp <= 0:
                     print("You have been slain...")
                     exit()

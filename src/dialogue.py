@@ -58,7 +58,17 @@ npc_dialogue = {
         "quest" : None,
         "last_said" : -1,
         "exhausted" : "Come again soon!"
-    }
+    },
+    "survivor" : {
+        "dialogue" : [
+            "Is someone there? Please, come help me out of here.",
+            "Thank you so much. I need to get this wood back to my father before he gets worried.",
+            "Oh. He's already worried? Can you tell him you found me heroically fending off goblins from some innocent puppies? This truth is too embarrassing."
+        ],
+        "quest" : None,
+        "last_said" : -1,
+        "exhausted" : f"I need to get back to the Castle quickly! Thanks again for saving me, {player_info.player.name}."
+    },
 }
 
 

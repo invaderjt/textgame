@@ -13,14 +13,24 @@ location_glossary = {
         "search" : [
             "There are several people to talk to and businesses to visit.",
             ["Blacksmith", "Merchant", "Priest"],
-            ]
-        },
+        ]
+    },
     (0,1) : {
         "feature" : "Road",
         "environment" : "Forest",
         "encounter" : ["Bugbear", "Goblin"],
         "arrival" : "The road North of the castle is falling apart. The bricks are cracked and displaced, scarred from conflict.",
         "search" : None
+    },
+    (2,3) : {
+        "feature" : "Old Mines",
+        "environment" : "Forest",
+        "encounter" : ["Ogre", "Bugbear", "Hobgoblin", "Goblin", "Goblin"],
+        "arrival" : "The old mines are overrun with goblins. They're trying to get into the entrace. You hear someone calling for help from within!",
+        "search" : [
+            "A dwarf crawl out of the mine entrance. He's bruised and covered in filth. Could this be the blacksmith's son?",
+            ["Survivor"],
+        ]
     }
     
     
