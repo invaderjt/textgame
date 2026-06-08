@@ -2,6 +2,7 @@ from progression import *
 from bones import *
 import player_info
 from locations import *
+from formatters import *
 
 
 def main():

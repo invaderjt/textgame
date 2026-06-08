@@ -14,11 +14,13 @@ def center_in_box(text: str, width: int = L_WIDTH) -> None:
     text_space = (9 * width)//10
     lines = []
     line = ""
-    words = text.split()
+    words = text.split(" ")
     while len(words) > 0:
-        if len(line + " " + words[0]) <= (text_space):
+        if len(line + " " + words[0]) <= (text_space) and words[0] != "\n":
             line = " ".join([line, words.pop(0)])
         else:
+            if words[0] == "\n":
+                words.pop(0)
             lines.append(line)
             line = ""   
     if line:

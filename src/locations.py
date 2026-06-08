@@ -37,16 +37,7 @@ location_glossary = {
 }
 
 
-settlements_glossary = {
-    
-    "Castle Blackhill" : {
-        "NPCs" : [
-            "Blacksmith",
-            "Merchant",
-            "Priest",
-        ],
-    }
-}
+
 
 def encounter_difficulty():
     pass

@@ -12,6 +12,7 @@ universal_commands = [
     "status",
     "re",
     "quests",
+    "help",
 ]
 
 input_queue = ""
@@ -42,6 +43,8 @@ def universal_input(command: str) -> None:
         case "quests":
             print(f"Current Quests: {player_info.player.current_quests}")
             print(f"Completed Quests: {player_info.player.completed_quests}")
+        case "help":
+            text_box("Information \n This game is controlled via text inputs. Your options will be listed each time you're asked for inputs. \n Inputs are not case sensitive. If no options are listed, you may input anything you like (alphanumeric characters only). \n \n Quick Inputs \n Enter just the first letter of an option to select it. \n ex: 'a' instead of 'attack' \n \n Input Chains \n Chain inputs together if you know what you'll be entering on the next prompt by separating them with commas. \n ex: 'travel,north' instead of 'travel' then 'north' \n \n Universal Commands \n 'save' - save your progress \n 'exit' - close the game \n 'status' - view your stats \n 'bag' - view the contents of your bag \n 'quests' - view your current and completed quests \n 're' - repeat the preview input (including input chains) \n 'help' - view this screen again")
 
 
 def try_again():

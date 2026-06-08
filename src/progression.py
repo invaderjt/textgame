@@ -16,7 +16,7 @@ def intro_block():
     print("\n")
     separator("-")
     separator("~")
-    return get_player_input("", ["New", "Load", "Exit"])
+    return get_player_input("", ["New", "Load", "Help", "Exit"])
     
 def assign_job(method: str, god: str) -> str | None:
     if method == "Blade":
@@ -37,7 +37,7 @@ def assign_job(method: str, god: str) -> str | None:
         raise ValueError("Could not assign job.")
 
 def introduction():
-    dialogue(intro_blurb)
+    text_box(intro_blurb)
     confirmed = False
     while not confirmed:
         name = get_player_input("What is your name?")
@@ -51,6 +51,5 @@ def introduction():
             continue
     return name, method, god, job
 
-def dialogue(text):
-    text_box(text)
+
 
