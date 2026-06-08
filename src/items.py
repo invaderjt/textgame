@@ -2,10 +2,11 @@
 
 
 class Item():
-    def __init__(self, quantity: int, name: str, weight: float):
+    def __init__(self, quantity: int, name: str, weight: float, effect: str = None):
         self.name = name
         self.weight = weight
         self.quantity = quantity
+        self.effect = effect
 
     def acquire(self, amount: int = 1):
         self.quantity += amount
@@ -23,8 +24,8 @@ class Item():
 
 
 class Weapon(Item):
-    def __init__(self, quantity: int, name: str, weight: float, slot: str, damage: int, dmg_type: str):
-        super().__init__(quantity, name, weight)
+    def __init__(self, quantity: int, name: str, weight: float, slot: str, damage: int, dmg_type: str, effect: str = None):
+        super().__init__(quantity, name, weight, effect)
         self.damage = damage
         self.dmg_type = dmg_type
         self.slot = slot
@@ -33,16 +34,37 @@ class Weapon(Item):
 
 class Armor(Item):
     def __init__(self, quantity: int, name: str, weight: float, slot: str, armor: int, effect: str):
-        super().__init__(quantity, name, weight)
+        super().__init__(quantity, name, weight, effect)
         self.armor = armor
-        self.effect = effect
         self.slot = slot
         self.equipped = False
 
+class Consumable(Item):
+    def __init__(self, quantity: int, name: str, weight: float, effect: str = None):
+        super().__init__(quantity, name, weight, effect)
 
+    def use(self, player):
+        print(f"{self.name} has no effect when used.")
+        return False
+
+
+class Potion(Consumable):
+    def use(self, player):
+        healed = player.max_hp // 2
+        new_hp = min(player.current_hp + healed, player.max_hp)
+        actual_heal = new_hp - player.current_hp
+        player.current_hp = new_hp
+        print(f"You drink a Potion and restore {actual_heal} HP.")
+        return True
 
 
 item_glossary = {
+    "Potion" : {
+        "name" : "Potion",
+        "type" : "potion",
+        "weight" : 0.5,
+        "effect" : "heal_half_max"
+    },
     "Sword" : {
         "name" : "Sword",
         "type" : "weapon",

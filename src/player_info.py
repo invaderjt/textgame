@@ -22,7 +22,7 @@ class Player():
             "Extra" : None
         }
         self.level = 1
-        self.max_hp = 100
+        self.max_hp = 10
         self.current_hp = self.max_hp
         self.xp = 0
         self.max_mp = 0
@@ -71,6 +71,10 @@ class Player():
                 acquired = items.Weapon(quantity, new_item["name"], new_item["weight"], new_item["slot"], new_item["damage"], new_item["dmg_type"])
             case "armor":
                 acquired = items.Armor(quantity, new_item["name"], new_item["weight"], new_item["slot"], new_item["armor"], new_item["effect"])
+            case "potion":
+                acquired = items.Potion(quantity, new_item["name"], new_item["weight"], new_item["effect"])
+            case "consumable":
+                acquired = items.Consumable(quantity, new_item["name"], new_item["weight"], new_item["effect"])
             case _:
                 acquired = items.Item(quantity, new_item["name"], new_item["weight"])
         for object in self.bag:
@@ -150,7 +154,7 @@ class Player():
             print("Nothing")
             return
         for item in self.bag:
-            if item.equipped:
+            if (isinstance(item, items.Weapon) or isinstance(item, items.Armor)) and item.equipped:
                 print(f"{item.name} (equipped)")
             elif item.quantity > 1:
                 print(f"{item.name} x{item.quantity}")
@@ -182,6 +186,21 @@ class Player():
             print(f"You hit the {enemy.name} for {actual_damage} damage.")
         else:
             print("You missed!")
+
+    def use_item(self, name: str):
+        index = self.find_item(name)
+        if index is None:
+            print(f"{name} not in bag.")
+            return
+        item = self.bag[index]
+        if not isinstance(item, items.Consumable):
+            print(f"{name} cannot be used this way.")
+            return
+        used = item.use(self)
+        if used:
+            item.quantity -= 1
+            if item.quantity <= 0:
+                self.bag.pop(index)
 
 
 player = Player("not set", "not set", "not set", "not set")

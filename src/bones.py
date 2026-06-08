@@ -79,6 +79,8 @@ def save_game() -> None:
             item_data += add_to_save_data(f"Weapon${item.name}${item.quantity}${item.equipped}")
         elif isinstance(item, items.Armor):
             item_data += add_to_save_data(f"Armor${item.name}${item.quantity}${item.equipped}")
+        elif isinstance(item, items.Consumable):
+            item_data += add_to_save_data(f"Consumable${item.name}${item.quantity}")
         else:
             item_data += add_to_save_data(f"Item${item.name}${item.quantity}")
     with open(f"./saves/{plyr.name.lower()}/items.txt", "w") as file:
@@ -124,6 +126,8 @@ def load_game() -> bool:
                     if str_to_bool(info[3]):
                         player_info.player.equip_item(info[1], items.item_glossary[info[1]]["slot"])
                 case "Item":
+                    player_info.player.add_to_bag(info[1], int(info[2]))
+                case "Consumable":
                     player_info.player.add_to_bag(info[1], int(info[2]))
     print(f"Welcome back, {player_info.player.name}!")
     return True

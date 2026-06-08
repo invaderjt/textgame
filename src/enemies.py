@@ -1,7 +1,9 @@
 from combat import calculate_damage, check_if_hit
+import items
 import player_info
 from utils import get_player_input
 from formatters import *
+from collections.abc import Callable
 
 class Enemy():
     def __init__(self, name: str, hp: int, mp: int, attack: int, armor: int, speed: int):
@@ -57,7 +59,12 @@ def run_encounter(enemies: list[str]):
                             player_info.player.in_combat = False
                             break
                     case "Use Item":
-                        print("Not yet implemented.")
+                        consumables = [item.name for item in player_info.player.bag if isinstance(item, items.Consumable)]
+                        if not consumables:
+                            print("You have no consumable items to use.")
+                            continue
+                        choice = get_player_input("Use which item? (Quick input may fail)", consumables)
+                        player_info.player.use_item(choice)
                     case "Flee":
                         print("You turn back and flee.")
                         player_info.player.in_combat = False
