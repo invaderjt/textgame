@@ -81,6 +81,30 @@ item_glossary = {
         "damage" : 7,
         "dmg_type" : "physical"
     },
+    "Short Sword" : {
+        "name" : "Short Sword",
+        "type" : "weapon",
+        "weight" : 1.5,
+        "slot" : "Main_Hand",
+        "damage" : 3,
+        "dmg_type" : "physical"
+    },
+    "Mace" : {
+        "name" : "Mace",
+        "type" : "weapon",
+        "weight" : 3.0,
+        "slot" : "Main_Hand",
+        "damage" : 2,
+        "dmg_type" : "physical"
+    },
+    "Staff" : {
+        "name" : "Staff",
+        "type" : "weapon",
+        "weight" : 1.5,
+        "slot" : "Main_Hand",
+        "damage" : 4,
+        "dmg_type" : "physical"
+    },
     "Shield" : {
         "name" : "Shield",
         "type" : "armor",
@@ -121,4 +145,37 @@ item_glossary = {
         "armor" : 1,
         "effect": None
     },
+    "Simple Hood" : {
+        "name" : "Simple Hood",
+        "type" : "armor",
+        "weight" : 0.5,
+        "slot" : "Head",
+        "armor" : 0,
+        "effect": None
+    },
+    "Simple Robes" : {
+        "name" : "Simple Robes",
+        "type" : "armor",
+        "weight" : 2.0,
+        "slot" : "Body",
+        "armor" : 1,
+        "effect": None
+    },
+    "Simple Gloves" : {
+        "name" : "Simple Gloves",
+        "type" : "armor",
+        "weight" : 0.5,
+        "slot" : "Hands",
+        "armor" : 0,
+        "effect": None
+    },
+    "Simple Boots" : {
+        "name" : "Simple Boots",
+        "type" : "armor",
+        "weight" : 2.0,
+        "slot" : "Feet",
+        "armor" : 1,
+        "effect": None
+    },
+
 }

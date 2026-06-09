@@ -40,11 +40,13 @@ class Player():
         self.spells = []
         match self.job:
             case "Knight":
-                self.max_hp += 5
+                self.max_hp += 8
             case "Warrior":
                 self.atk_bonus += 2
+                self.speed += 1
             case "Monk":
-                self.speed += 2
+                self.speed += 3
+                self.atk_bonus += 2
             case "Priest":
                 self.max_mp += 10
                 self.max_hp += 5
@@ -111,12 +113,51 @@ class Player():
                 self.equip_item("Father's Boots", "Feet")
                 self.equip_item("Great Sword", "Main_Hand")
             case "Monk":
-                pass
+                self.add_to_bag("Simple Robes")
+                self.add_to_bag("Simple Gloves")
+                self.add_to_bag("Simple Boots")
+                self.add_to_bag("Short Sword")
+                self.equip_item("Simple Robes", "Body")
+                self.equip_item("Simple Gloves", "Hands")
+                self.equip_item("Simple Boots", "Feet")
+                self.equip_item("Short Sword", "Main_Hand")
             case "Priest":
+                self.add_to_bag("Simple Hood")
+                self.add_to_bag("Father's Armor")
+                self.add_to_bag("Simple Gloves")
+                self.add_to_bag("Father's Boots")
+                self.add_to_bag("Mace")
+                self.add_to_bag("Shield")
+                self.equip_item("Simple Hood", "Head")
+                self.equip_item("Father's Armor", "Body")
+                self.equip_item("Simple Gloves", "Hands")
+                self.equip_item("Father's Boots", "Feet")
+                self.equip_item("Mace", "Main_Hand")
+                self.equip_item("Shield", "Off_Hand")
                 self.spells.append("Holy Light")
             case "Acolyte":
+                self.add_to_bag("Simple Hood")
+                self.add_to_bag("Simple Robes")
+                self.add_to_bag("Simple Gloves")
+                self.add_to_bag("Simple Boots")
+                self.add_to_bag("Staff")
+                self.equip_item("Simple Hood", "Head")
+                self.equip_item("Simple Hood", "Body")
+                self.equip_item("Simple Gloves", "Hands")
+                self.equip_item("Simple Boots", "Feet")
+                self.equip_item("Staff", "Main_Hand")
                 self.spells.append("Dark Blast")
             case "Mystic":
+                self.add_to_bag("Simple Hood")
+                self.add_to_bag("Simple Robes")
+                self.add_to_bag("Simple Gloves")
+                self.add_to_bag("Simple Boots")
+                self.add_to_bag("Staff")
+                self.equip_item("Simple Hood", "Head")
+                self.equip_item("Simple Hood", "Body")
+                self.equip_item("Simple Gloves", "Hands")
+                self.equip_item("Simple Boots", "Feet")
+                self.equip_item("Staff", "Main_Hand")
                 self.spells.append("Lightning Bolt")
 
 
