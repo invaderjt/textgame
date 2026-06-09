@@ -50,11 +50,14 @@ class Player():
             case "Priest":
                 self.max_mp += 10
                 self.max_hp += 5
+                self.spells.append("Holy Light")
             case "Acolyte":
                 self.max_mp += 10
                 self.spl_bonus += 2
+                self.spells.append("Dark Blast")
             case "Mystic":
                 self.max_mp += 15
+                self.spells.append("Lightning Bolt")
         self.full_restore()
             
     def heal_to_full(self):
@@ -134,7 +137,6 @@ class Player():
                 self.equip_item("Father's Boots", "Feet")
                 self.equip_item("Mace", "Main_Hand")
                 self.equip_item("Shield", "Off_Hand")
-                self.spells.append("Holy Light")
             case "Acolyte":
                 self.add_to_bag("Simple Hood")
                 self.add_to_bag("Simple Robes")
@@ -146,7 +148,6 @@ class Player():
                 self.equip_item("Simple Gloves", "Hands")
                 self.equip_item("Simple Boots", "Feet")
                 self.equip_item("Staff", "Main_Hand")
-                self.spells.append("Dark Blast")
             case "Mystic":
                 self.add_to_bag("Simple Hood")
                 self.add_to_bag("Simple Robes")
@@ -158,7 +159,6 @@ class Player():
                 self.equip_item("Simple Gloves", "Hands")
                 self.equip_item("Simple Boots", "Feet")
                 self.equip_item("Staff", "Main_Hand")
-                self.spells.append("Lightning Bolt")
 
 
     def find_item(self, name: str) -> int | None:
