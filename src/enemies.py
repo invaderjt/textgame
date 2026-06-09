@@ -3,7 +3,6 @@ import items
 import player_info
 from utils import get_player_input
 from formatters import *
-from collections.abc import Callable
 
 class Enemy():
     def __init__(self, name: str, hp: int, mp: int, attack: int, armor: int, speed: int):
@@ -39,7 +38,7 @@ def run_encounter(enemies: list[str]):
         turn_order = sorted(active_enemies + [player_info.player], key=lambda x: x.speed, reverse=True)
         for entity in turn_order:
             if isinstance(entity, player_info.Player):
-                action = get_player_input("What will you do?", ["Attack", "Use Item", "Flee"]).title()
+                action = get_player_input("What will you do?", ["Attack", "Cast", "Use Item", "Flee"]).title()
                 match action:
                     case "Attack":
                         if len(active_enemies) > 1:
@@ -51,13 +50,18 @@ def run_encounter(enemies: list[str]):
                             target_index = 0
                         target = active_enemies[target_index]
                         player_info.player.attack_enemy(target)
-                        if target.hp <= 0:
-                            print(f"You defeated the {target.name}!")
-                            active_enemies.pop(target_index)
-                        if len(active_enemies) == 0:
-                            print("All enemies slain!")
-                            player_info.player.in_combat = False
-                            break
+                        
+                    case "Cast":
+                        if player_info.player.spells == []:
+                            print("You don't know any spells...")
+                            continue
+                        spell = get_player_input("Which spell?", player_info.player.spells).title()
+                        if player_info.player.current_mp >= player_info.spells[spell]["mp_cost"]:
+                            player_info.player.current_mp -= player_info.spells[spell]["mp_cost"]
+                            for enemy in active_enemies:
+                                player_info.player.cast_at_enemy(enemy, spell)
+                        else:
+                            print(f"Insufficient mp")
                     case "Use Item":
                         consumables = [item.name for item in player_info.player.bag if isinstance(item, items.Consumable)]
                         if not consumables:
@@ -65,14 +69,30 @@ def run_encounter(enemies: list[str]):
                             continue
                         choice = get_player_input("Use which item? (Quick input may fail)", consumables)
                         player_info.player.use_item(choice)
+                        continue
                     case "Flee":
                         print("You turn back and flee.")
                         player_info.player.in_combat = False
                         player_info.player.position = player_info.player.prev_position
                         break
+                for enemy in active_enemies:
+                    if enemy.hp <= 0:
+                        print(f"You defeated the {enemy.name}!")
+                        active_enemies.pop(active_enemies.index(enemy))
+                if len(active_enemies) == 0:
+                    print("All enemies slain!")
+                    player_info.player.in_combat = False
+                    break
             else:
+                hp_before = player_info.player.current_hp
                 if entity.hp > 0:
                     entity.attack_player()
+                half_hp = player_info.player.max_hp // 2
+                if hp_before > half_hp and player_info.player.current_hp <= half_hp:
+                    print("You're getting bloodied up!")
+                low_hp = half_hp // 2
+                if hp_before > low_hp and player_info.player.current_hp <= low_hp:
+                    print("You're barely holding on!")
                 if player_info.player.current_hp <= 0:
                     print("You have been slain...")
                     exit()

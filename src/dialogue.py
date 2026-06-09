@@ -12,8 +12,12 @@ def talk_to_npc(npc: str):
         if acceptance == "accept":
             text_box(speaker["quest_accept"])
             if speaker["quest_accept_item"] is not None:
-                player_info.player.add_to_bag(speaker["quest_accept_item"])
-                print(f"{npc.title()} gave you a {speaker["quest_accept_item"]}")
+                item = speaker["quest_accept_item"]
+                player_info.player.add_to_bag(item[0], item[1])
+                if item[1] == 1:
+                    print(f"{npc.title()} gave you a {item[0]}.")
+                else:
+                    print(f"{npc.title()} gave you {item[1]} {item[0]}s.")
             player_info.player.current_quests.add(speaker["quest"][0])
         else:
             text_box(speaker["quest_decline"])
@@ -49,7 +53,7 @@ npc_dialogue = {
         ],
         "quest" : ["Blacksmith's Son", 0],
         "quest_accept" : "Thanks a lot. Take this to help. And be careful; it's dangerous out there.",
-        "quest_accept_item" : "Potion",
+        "quest_accept_item" : ["Potion", 3],
         "quest_decline" : "Bah, typical. You adventurers always think you're too busy to help the common folk.",
         "quest_turn_in" : None,
         "last_said" : -1,

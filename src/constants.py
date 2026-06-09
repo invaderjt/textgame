@@ -1,4 +1,4 @@
-
+RANDOM_ENCOUNTER_CHANCE = 0.8
 
 
 

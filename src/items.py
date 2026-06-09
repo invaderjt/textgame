@@ -73,12 +73,20 @@ item_glossary = {
         "damage" : 5,
         "dmg_type" : "physical"
     },
+    "Great Sword" : {
+        "name" : "Great Sword",
+        "type" : "weapon",
+        "weight" : 4.0,
+        "slot" : "Main_Hand",
+        "damage" : 7,
+        "dmg_type" : "physical"
+    },
     "Shield" : {
         "name" : "Shield",
         "type" : "armor",
         "weight" : 4.0,
         "slot" : "Off_Hand",
-        "armor" : 1,
+        "armor" : 2,
         "effect" : None
     },
     "Father's Helm" : {

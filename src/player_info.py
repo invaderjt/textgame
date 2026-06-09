@@ -37,22 +37,23 @@ class Player():
         self.armor = 0
         self.current_quests = set()
         self.completed_quests = set()
+        self.spells = []
         match self.job:
             case "Knight":
                 self.max_hp += 5
-                self.heal_to_full()
             case "Warrior":
                 self.atk_bonus += 2
             case "Monk":
                 self.speed += 2
             case "Priest":
+                self.max_mp += 10
                 self.max_hp += 5
-                self.heal_to_full()
             case "Acolyte":
+                self.max_mp += 10
                 self.spl_bonus += 2
             case "Mystic":
-                self.max_mp += 5
-                self.mp_to_full()
+                self.max_mp += 15
+        self.full_restore()
             
     def heal_to_full(self):
         self.current_hp = self.max_hp
@@ -99,15 +100,24 @@ class Player():
                 self.equip_item("Sword", "Main_Hand")
                 self.equip_item("Shield", "Off_Hand")
             case "Warrior":
-                pass
+                self.add_to_bag("Father's Helm")
+                self.add_to_bag("Father's Armor")
+                self.add_to_bag("Father's Gloves")
+                self.add_to_bag("Father's Boots")
+                self.add_to_bag("Great Sword")
+                self.equip_item("Father's Helm", "Head")
+                self.equip_item("Father's Armor", "Body")
+                self.equip_item("Father's Gloves", "Hands")
+                self.equip_item("Father's Boots", "Feet")
+                self.equip_item("Great Sword", "Main_Hand")
             case "Monk":
                 pass
             case "Priest":
-                pass
+                self.spells.append("Holy Light")
             case "Acolyte":
-                pass
+                self.spells.append("Dark Blast")
             case "Mystic":
-                pass
+                self.spells.append("Lightning Bolt")
 
 
     def find_item(self, name: str) -> int | None:
@@ -187,6 +197,15 @@ class Player():
         else:
             print("You missed!")
 
+    def cast_at_enemy(self, enemy, spell):
+        spl = spells[spell]
+        if check_if_hit(self.speed, enemy.speed):
+            actual_damage = spl["damage"] + self.spl_bonus
+            enemy.hp -= actual_damage
+            print(f"You casted {spell} at {enemy.name} for {actual_damage} damage.")
+        else:
+            print(f"{spell} missed {enemy.name}.")
+
     def use_item(self, name: str):
         index = self.find_item(name)
         if index is None:
@@ -205,3 +224,18 @@ class Player():
 
 player = Player("not set", "not set", "not set", "not set")
 
+
+spells = {
+    "Holy Light" : {
+        "damage" : 3,
+        "mp_cost" : 2,
+    },
+    "Dark Blast" : {
+        "damage" : 4,
+        "mp_cost" : 3,
+    },
+    "Lightning Bolt" : {
+        "damage" : 3,
+        "mp_cost" : 2,
+    }
+}

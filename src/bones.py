@@ -5,6 +5,9 @@ from formatters import *
 import player_info
 from utils import get_player_input
 from dialogue import *
+from enemies import *
+from constants import *
+import random
 
 
 def what_next() -> None:
@@ -31,8 +34,15 @@ def search():
         print(location.search)
 
 def camp():
-    player_info.player.full_restore()
     print("You set up camp and rest for the night. Hopefully you go unnoticed...")
+    random_encounter = RANDOM_ENCOUNTER_CHANCE + (locations.locations[player_info.player.position].distance_from_blackhill() / 10)
+    if random.random() < random_encounter:
+        run_encounter([random.choice(locations.encounters)])
+    else:
+        print("You sleep peacefully.")
+    player_info.player.full_restore()
+    
+
 
 def travel():
     direction = get_player_input("Which way?", ["North", "East", "South", "West"])
